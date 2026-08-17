@@ -187,17 +187,23 @@ function Invoke-UsbBuild {
         $appCount = 0
         $appsDir  = Join-Path $target.DataRoot 'USBPREP\Apps'
         if ($Options.DownloadApps) {
-            # $reportProgress, not $OnProgress: this scriptblock runs inside
-            # Get-AppPayload, and PowerShell resolves variable names in the
-            # invoking scope. Referring to $OnProgress here would bind to
-            # Get-AppPayload's own callback parameter - this very scriptblock -
-            # and recurse until the stack overflows.
+            # Two constraints on this callback, both learned the hard way:
+            #
+            # 1. It must not be named $OnProgress. Scriptblocks resolve variables
+            #    in the scope that invokes them, so that name would bind to
+            #    Get-AppPayload's own callback parameter - this very scriptblock -
+            #    and recurse until the stack overflows.
+            # 2. No .GetNewClosure(), and no calls to dot-sourced functions such
+            #    as Write-Log. Under the GUI the build runs inside a WPF event
+            #    handler, whose session state does not expose script-scope
+            #    functions; a closure created there fails with "The term
+            #    'Write-Log' is not recognized". Get-AppPayload already logs each
+            #    download, so nothing is lost by keeping this to arithmetic.
             $reportProgress = $OnProgress
             $appResults = Get-AppPayload -Destination $appsDir -ProgressCallback {
                 param($pct, $label)
                 & $reportProgress (80 + [int](12 * $pct / 100))
-                Write-Log "  [$pct%] $label"
-            }.GetNewClosure()
+            }
             Write-AppManifest -Destination $appsDir -Results $appResults | Out-Null
             $appCount = @($appResults | Where-Object Success).Count
 

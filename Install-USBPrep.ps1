@@ -130,13 +130,21 @@ $isAdmin = (New-Object Security.Principal.WindowsPrincipal(
     [Security.Principal.WindowsBuiltInRole]::Administrator)
 
 Say ""
+
+# Always launch as a fresh process, even when already elevated.
+#
+# Running it with `& $entryPoint` instead put the tool in a child scope of this
+# iex'd string, and in that session state scriptblocks cannot reliably see the
+# tool's dot-sourced functions - which surfaced as "The term 'Write-Log' is not
+# recognized" mid-build, but only for users who were already administrators.
+# A fresh process makes both paths identical to the one that gets tested.
+$launchArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$entryPoint`"")
+
 if ($isAdmin) {
     Say "  Starting..." 'Cyan'
-    & $entryPoint
+    Start-Process powershell.exe -ArgumentList $launchArgs
 } else {
     Say "  Starting - approve the administrator prompt when it appears." 'Yellow'
     Say ""
-    Start-Process powershell.exe -Verb RunAs -ArgumentList @(
-        '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$entryPoint`""
-    )
+    Start-Process powershell.exe -Verb RunAs -ArgumentList $launchArgs
 }
