@@ -1,0 +1,36 @@
+# Built artefacts - regenerate with build\New-Release.ps1, never commit
+dist/
+drivers/
+
+# Fido is GPLv3 and auto-fetched at runtime. Not committing it keeps this repo
+# free of third-party licensed code and stops it churning on every update.
+tools/Fido.ps1
+tools/Fido.ps1.bak
+tools/Fido.state.json
+
+# Runtime output
+logs/
+iso/
+
+# Local rescues of whatever was on a stick before it was wiped. Machine-specific
+# (BIOS images, customer data) - never belongs in the repo.
+backup/
+
+# Operator-supplied payload. These folders are staging areas on YOUR machine;
+# their contents are not part of the tool.
+payload/drivers/*
+payload/apps/*
+!payload/drivers/README.txt
+!payload/apps/README.txt
+
+# Local config - may contain machine-specific paths
+settings.json
+
+# Internal docs - kept local, not published
+README.md
+SETUP.md
+
+# Windows noise
+Thumbs.db
+desktop.ini
+*.lnk

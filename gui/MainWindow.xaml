@@ -1,0 +1,203 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="USB Prep Tool" Height="820" Width="580"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
+        Background="#1E1E1E" Foreground="#E8E8E8"
+        FontFamily="Segoe UI" FontSize="12">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#E8E8E8"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#E8E8E8"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="GroupBox">
+            <Setter Property="Foreground" Value="#4EA1F7"/>
+            <Setter Property="BorderBrush" Value="#3A3A3A"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Padding" Value="8"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#2D2D2D"/>
+            <Setter Property="Foreground" Value="#E8E8E8"/>
+            <Setter Property="BorderBrush" Value="#4A4A4A"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Padding" Value="3"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#2D2D2D"/>
+            <Setter Property="Foreground" Value="#E8E8E8"/>
+            <Setter Property="BorderBrush" Value="#4A4A4A"/>
+            <Setter Property="Padding" Value="10,4"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="USB Prep Tool" FontSize="20" FontWeight="SemiBold"
+                   Foreground="#4EA1F7" Margin="0,0,0,10"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <GroupBox Header="This machine">
+                    <StackPanel>
+                        <TextBlock x:Name="lblMachine" TextWrapping="Wrap" Foreground="#C8C8C8"/>
+                        <Border x:Name="brdIntelWarn" Background="#3A2E14" BorderBrush="#E0A030"
+                                BorderThickness="1" Padding="8" Margin="0,8,0,0" Visibility="Collapsed">
+                            <TextBlock x:Name="lblIntelWarn" TextWrapping="Wrap" Foreground="#F0C060"/>
+                        </Border>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Target device">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox x:Name="cboDisk" Grid.Column="0" Height="26"/>
+                        <Button x:Name="btnRefreshDisks" Grid.Column="1" Content="Refresh" Margin="8,0,0,0"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Windows image">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="txtIso" Grid.Column="0" Height="26"
+                                     Text="No ISO selected" IsReadOnly="True"/>
+                            <Button x:Name="btnBrowseIso" Grid.Column="1" Content="Browse..." Margin="8,0,0,0"/>
+                            <Button x:Name="btnDownloadIso" Grid.Column="2" Content="Download" Margin="6,0,0,0"/>
+                        </Grid>
+                        <Grid Margin="0,6,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="lblFido" Grid.Column="0" TextWrapping="Wrap"
+                                       Foreground="#9A9A9A" Text="Fido: checking..."/>
+                            <Button x:Name="btnFidoUpdate" Grid.Column="1" Content="Update Fido"
+                                    Margin="8,0,0,0" Padding="8,2"/>
+                            <Button x:Name="btnFidoRollback" Grid.Column="2" Content="Roll back"
+                                    Margin="6,0,0,0" Padding="8,2"/>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Customisations">
+                    <StackPanel>
+                        <CheckBox x:Name="chkBypass" IsChecked="True"
+                                  Content="Remove requirement for 4GB+ RAM, Secure Boot and TPM 2.0"/>
+                        <CheckBox x:Name="chkNoMsa" IsChecked="True"
+                                  Content="Remove requirement for an online Microsoft account"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="chkLocalUser" Grid.Column="0" IsChecked="True"
+                                      Content="Create a local account with username:"/>
+                            <TextBox x:Name="txtUserName" Grid.Column="1" Height="24" Margin="8,0,0,0"/>
+                        </Grid>
+                        <CheckBox x:Name="chkRegional" IsChecked="True"
+                                  Content="Set regional options to the same values as this user's"/>
+                        <CheckBox x:Name="chkPrivacy" IsChecked="True"
+                                  Content="Disable data collection (Skip privacy questions)"/>
+                        <TextBlock x:Name="lblRegional" Margin="22,2,0,0" Foreground="#9A9A9A" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="RAID drivers">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Driver set" Margin="0,0,8,0"/>
+                            <ComboBox x:Name="cboDriverSet" Grid.Column="1" Height="26"/>
+                        </Grid>
+                        <TextBlock x:Name="lblDriverReason" Margin="0,6,0,0" TextWrapping="Wrap" Foreground="#9A9A9A"/>
+                        <CheckBox x:Name="chkLoadDrivers" IsChecked="True"
+                                  Content="Load the selected set in WinPE so Setup can see the disk"/>
+                        <CheckBox x:Name="chkIncludeAllSets" IsChecked="True"
+                                  Content="Also copy the other sets to the USB for manual F6 loading"/>
+                        <Grid Margin="0,6,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Extra" Margin="0,0,8,0"/>
+                            <TextBox x:Name="txtDrivers" Grid.Column="1" Height="24"/>
+                            <Button x:Name="btnBrowseDrivers" Grid.Column="2" Content="..." Margin="6,0,0,0" Width="34"/>
+                        </Grid>
+                        <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Foreground="#7A7A7A"
+                                   Text="Extra is for drivers you supply yourself - Intel RST/VMD, NIC, chipset. Leave blank if unused."/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Applications">
+                    <StackPanel>
+                        <CheckBox x:Name="chkDownloadApps" IsChecked="True"
+                                  Content="Download the app payload from vendor sites"/>
+                        <TextBlock x:Name="lblAppList" Margin="22,0,0,4" TextWrapping="Wrap" Foreground="#9A9A9A"/>
+                        <CheckBox x:Name="chkAutoApps" IsChecked="True"
+                                  Content="Install them automatically at first logon"/>
+                        <Grid Margin="0,6,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Extra" Margin="0,0,8,0"/>
+                            <TextBox x:Name="txtApps" Grid.Column="1" Height="24"/>
+                            <Button x:Name="btnBrowseApps" Grid.Column="2" Content="..." Margin="6,0,0,0" Width="34"/>
+                        </Grid>
+                        <CheckBox x:Name="chkNeutralise" IsChecked="True"
+                                  Content="Stage Defender-flagged tools as .bin so they survive the copy"/>
+                        <CheckBox x:Name="chkRestoreFlagged" IsChecked="False"
+                                  Content="Restore them to .exe on the target (adds a Defender exclusion)"/>
+                    </StackPanel>
+                </GroupBox>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2">
+            <TextBlock x:Name="lblStatus" Margin="0,8,0,4" TextWrapping="Wrap" Text="Ready."/>
+            <ProgressBar x:Name="barProgress" Height="18" Minimum="0" Maximum="100"
+                         Background="#2D2D2D" Foreground="#4EA1F7" BorderBrush="#4A4A4A"/>
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="lblWarn" Grid.Column="0" Foreground="#E0A030" TextWrapping="Wrap"
+                           Text="The selected disk will be completely erased."/>
+                <Button x:Name="btnClose" Grid.Column="1" Content="Close" Width="90" Margin="0,0,8,0"/>
+                <Button x:Name="btnStart" Grid.Column="2" Content="START" Width="120"
+                        Background="#0F6CBD" FontWeight="SemiBold"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

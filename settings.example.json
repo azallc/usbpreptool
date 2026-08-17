@@ -1,0 +1,44 @@
+{
+  "_comment": [
+    "Copy to settings.json and run: USBPrepTool.ps1 -NoGui -ConfigPath settings.json",
+    "",
+    "Only DiskNumber and IsoPath are required. Everything else falls back to a",
+    "default, and RaidSetId defaults to whatever hardware detection picked on the",
+    "machine running the build - which is the right answer when the tool is run on",
+    "the machine being reinstalled.",
+    "",
+    "DiskNumber must match Get-Disk output. The tool still refuses any disk that is",
+    "not USB, or that is the boot or system disk, regardless of what is set here.",
+    "",
+    "RaidSetId: 'auto' (detect - recommended) | 'am4-sata' | 'am4-nvme' | 'am5' |",
+    "null (deliberately no bundled RAID driver). Note null and 'auto' differ:",
+    "null means load nothing, 'auto' means let detection decide.",
+    "Only the chosen set is auto-loaded in WinPE; the others go to Drivers\\All for",
+    "manual F6 use, because all three claim the same hardware IDs."
+  ],
+
+  "DiskNumber": 3,
+  "IsoPath": "C:\\Users\\aza\\Documents\\usbpreptool\\iso\\Win11_25H2_English_x64_v2.iso",
+
+  "BypassHardwareChecks": true,
+  "SkipMicrosoftAccount": true,
+  "CreateLocalAccount": true,
+  "LocalAccountName": "c7x9",
+  "LocalAccountPassword": "",
+  "AutoLogon": false,
+  "MatchRegionalOptions": true,
+  "DisableDataCollection": true,
+
+  "LoadRaidDrivers": true,
+  "RaidSetId": "auto",
+  "IncludeAllDriverSets": true,
+
+  "DownloadApps": true,
+  "InstallAppsAutomatically": true,
+  "NeutraliseFlaggedTools": true,
+  "RestoreFlaggedTools": false,
+  "RunFirstLogonScript": true,
+
+  "DriverSource": "",
+  "AppSource": ""
+}
