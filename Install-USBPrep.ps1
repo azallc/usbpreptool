@@ -92,17 +92,43 @@ if ($needDownload) {
     Say "  Downloaded $([math]::Round($zipItem.Length/1MB,1)) MB" 'DarkGray'
 
     Say "  Unpacking to $InstallDir ..." 'Gray'
-    if (Test-Path -LiteralPath $InstallDir) { Remove-Item -LiteralPath $InstallDir -Recurse -Force }
-    New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
+
+    # Extract to a staging directory and swap it in, rather than deleting in
+    # place. Remove-Item -Recurse can return before Windows has finished
+    # releasing the directory, so extracting straight afterwards can fail with
+    # "the file already exists" against files that were supposed to be gone.
+    # Seen for real on the refresh path, which is how every update now arrives.
+    $staging = "$InstallDir.new"
+    if (Test-Path -LiteralPath $staging) {
+        Remove-Item -LiteralPath $staging -Recurse -Force -ErrorAction SilentlyContinue
+    }
+    New-Item -ItemType Directory -Path $staging -Force | Out-Null
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     try {
-        [System.IO.Compression.ZipFile]::ExtractToDirectory($tempZip, $InstallDir)
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($tempZip, $staging)
     } catch {
         Say "  Could not unpack the bundle: $($_.Exception.Message)" 'Red'
+        Remove-Item -LiteralPath $staging -Recurse -Force -ErrorAction SilentlyContinue
         return
     }
     Remove-Item -LiteralPath $tempZip -Force -ErrorAction SilentlyContinue
+
+    # Retire the old copy, giving Windows a few chances to let go of it.
+    for ($i = 0; $i -lt 5 -and (Test-Path -LiteralPath $InstallDir); $i++) {
+        Remove-Item -LiteralPath $InstallDir -Recurse -Force -ErrorAction SilentlyContinue
+        if (Test-Path -LiteralPath $InstallDir) { Start-Sleep -Milliseconds 300 }
+    }
+
+    if (Test-Path -LiteralPath $InstallDir) {
+        # Something still holds it. Overwriting in place is less clean than a
+        # rename but beats refusing to update.
+        Say "  Previous copy is locked - overwriting in place." 'DarkGray'
+        Copy-Item -Path (Join-Path $staging '*') -Destination $InstallDir -Recurse -Force
+        Remove-Item -LiteralPath $staging -Recurse -Force -ErrorAction SilentlyContinue
+    } else {
+        Move-Item -LiteralPath $staging -Destination $InstallDir
+    }
 
     if (-not (Test-Path -LiteralPath $entryPoint)) {
         Say "  Bundle unpacked but USBPrepTool.ps1 is missing - the release asset looks wrong." 'Red'
