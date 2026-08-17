@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Verifies a finished USB stick, without needing to boot it.
 

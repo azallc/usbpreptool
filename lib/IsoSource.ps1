@@ -1,4 +1,4 @@
-﻿# IsoSource.ps1 - obtaining a Windows ISO without making the user visit microsoft.com.
+# IsoSource.ps1 - obtaining a Windows ISO without making the user visit microsoft.com.
 #
 # Resolution order:
 #   1. An ISO the operator browsed to manually.

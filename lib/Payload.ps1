@@ -1,4 +1,4 @@
-﻿# Payload.ps1 - stages drivers and applications onto the NTFS partition and emits
+# Payload.ps1 - stages drivers and applications onto the NTFS partition and emits
 # the two scripts that run on the target machine:
 #
 #   \USBPREP\peload.cmd      - runs inside WinPE, loads RAID/VMD drivers so Setup

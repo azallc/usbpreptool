@@ -1,4 +1,4 @@
-﻿$GitHubOwner   = 'azallc'          # e.g. 'yourshop'
+$GitHubOwner   = 'azallc'          # e.g. 'yourshop'
 $GitHubRepo    = 'usbpreptool'       # repository name
 $BundleVersion = '1.0.0'             # release tag without the leading 'v'
 

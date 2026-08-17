@@ -1,4 +1,4 @@
-﻿# DiskPrep.ps1 - GPT split layout: FAT32 boot partition + NTFS data partition.
+# DiskPrep.ps1 - GPT split layout: FAT32 boot partition + NTFS data partition.
 #
 # Why split? Most UEFI firmware has no NTFS driver, so a pure-NTFS stick will not
 # boot without a shim (this is what Rufus's hidden UEFI:NTFS partition is for).

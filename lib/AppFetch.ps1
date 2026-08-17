@@ -1,4 +1,4 @@
-﻿# AppFetch.ps1 - downloads the application payload from vendor direct links.
+# AppFetch.ps1 - downloads the application payload from vendor direct links.
 #
 # Everything here is fetched from the vendor at build time rather than bundled,
 # so the stick always carries current installers and the release bundle stays

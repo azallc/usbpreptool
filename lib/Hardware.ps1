@@ -1,4 +1,4 @@
-﻿# Hardware.ps1 - detects what the customer is running so the correct RAID driver
+# Hardware.ps1 - detects what the customer is running so the correct RAID driver
 # set can be chosen automatically.
 #
 # This tool is run remotely BY THE CUSTOMER, on the machine being reinstalled.

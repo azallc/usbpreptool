@@ -1,4 +1,4 @@
-﻿<#
+<#
     Install-Payload.ps1 - runs ON THE TARGET MACHINE at first logon.
 
     Installs the staged drivers and applications into the fresh Windows install,

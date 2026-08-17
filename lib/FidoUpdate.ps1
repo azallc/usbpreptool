@@ -1,4 +1,4 @@
-﻿# FidoUpdate.ps1 - keeps tools\Fido.ps1 current.
+# FidoUpdate.ps1 - keeps tools\Fido.ps1 current.
 #
 # Fido is the script Rufus uses to resolve official Microsoft ISO links. Microsoft
 # changes their download API periodically and Fido gets patched upstream within

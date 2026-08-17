@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Packages the tool + AMD RAID drivers into a release zip for GitHub Releases.
 

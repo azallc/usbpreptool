@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Builds a customised Windows installation USB - GPT, FAT32 boot + NTFS data,
     autounattend customisations, staged RAID drivers and application payload.

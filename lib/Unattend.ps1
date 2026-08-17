@@ -1,4 +1,4 @@
-﻿# Unattend.ps1 - generates autounattend.xml.
+# Unattend.ps1 - generates autounattend.xml.
 #
 # This reproduces every checkbox Rufus offers (Rufus implements them the same way:
 # by writing an autounattend.xml to the root of the stick) and adds the driver and

@@ -1,4 +1,4 @@
-﻿# Common.ps1 - logging, elevation, small shared helpers.
+# Common.ps1 - logging, elevation, small shared helpers.
 
 # Both must be initialized at load: the entry point runs under
 # Set-StrictMode -Version 2.0, where reading a never-set variable is a hard error.

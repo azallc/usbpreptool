@@ -29,8 +29,10 @@ settings.json
 # Internal docs - kept local, not published
 README.md
 SETUP.md
+PI-SETUP.md
 
 # Windows noise
 Thumbs.db
 desktop.ini
 *.lnk
+
